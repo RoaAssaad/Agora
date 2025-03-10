@@ -30,9 +30,9 @@ describe('UsersController', () => {
         {
           provide: UsersService,
           useValue: {
-            create: jest.fn().mockResolvedValue(oneUser), // ✅ Fix mock create
+            create: jest.fn().mockResolvedValue(oneUser), //  Fix mock create
             findAll: jest.fn().mockResolvedValue([oneUser]),
-            findOne: jest.fn().mockResolvedValue(oneUser), // ✅ Fix findOne
+            findOne: jest.fn().mockResolvedValue(oneUser), //  Fix findOne
             remove: jest.fn(),
           },
         },

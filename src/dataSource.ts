@@ -10,6 +10,6 @@ export const AppDataSource = new DataSource({
   database: process.env.DATABASE_NAME || 'agora',
   entities: [__dirname + '/**/*.entity.{ts,js}'], // Load all entities
   migrations: [__dirname + '/migrations/*{.ts,.js}'], // Correct path!
-  synchronize: false, // ❌ Don't use in production (only migrations!)
-  logging: true, // ✅ Logs SQL queries
+  synchronize: false, //  Don't use in production (only migrations!)
+  logging: true, // Logs SQL queries
 });

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -17,22 +17,35 @@ export class UsersService {
     const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
 
     const user = this.usersRepository.create({
-      ...createUserDto,
-      password: hashedPassword, // 🔹 Store hashed password
+        ...createUserDto,
+        password: hashedPassword, //  Store hashed password
     });
 
     return this.usersRepository.save(user);
+}
+
+
+  async findAll(): Promise<Omit<User, 'password'>[]> {
+    const users = await this.usersRepository.find();
+    return users.map(({ password, ...user }) => user);
   }
 
-  async findAll(): Promise<User[]> {
-    return this.usersRepository.find();
-  }
+  async findOne(id: string): Promise<Omit<User, 'password'> | null> {
+    const user = await this.usersRepository.findOneBy({ id });
+    if (!user) {
+      throw new NotFoundException('User not found.');
+    }
 
-  async findOne(id: string): Promise<User | null> {
-    return this.usersRepository.findOneBy({ id });
+    // Return user without password
+    const { password, ...result } = user;
+    return result;
   }
 
   async remove(id: string): Promise<void> {
+    const user = await this.usersRepository.findOneBy({ id });
+    if (!user) {
+      throw new NotFoundException('User not found.');
+    }
     await this.usersRepository.delete(id);
   }
 }

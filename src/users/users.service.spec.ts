@@ -44,8 +44,8 @@ describe('UsersService', () => {
           provide: getRepositoryToken(User),
           useValue: {
             find: jest.fn().mockResolvedValue(userArray),
-            findOne: jest.fn().mockResolvedValue(oneUser), // ✅ Fix findOne
-            create: jest.fn().mockImplementation((dto) => dto), // ✅ Mock create
+            findOne: jest.fn().mockResolvedValue(oneUser), //  Fix findOne
+            create: jest.fn().mockImplementation((dto) => dto), // Mock create
             save: jest.fn().mockResolvedValue(oneUser),
             remove: jest.fn(),
             delete: jest.fn(),
