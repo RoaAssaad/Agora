@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Form, Button, Container, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import './AuthPages.css'; // same file used by login
+import './AuthPages.css';
+import { registerUser } from '../services/UserService';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -20,10 +21,13 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Registering:', formData);
-    // TODO: Connect to backend registration endpoint here
-    alert('Registered successfully!');
-    navigate('/login');
+    try {
+      await registerUser(formData.username, formData.email, formData.password);
+      alert('Account created!');
+      navigate('/login');
+    } catch (err) {
+      alert('Registration failed. Try again.');
+    }
   };
 
   return (

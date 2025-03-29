@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Form, Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import './AuthPages.css';
+import { loginUser } from '../services/UserService';
+import { setToken } from '../utility/Utility';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -11,10 +13,21 @@ const LoginPage = () => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login clicked with', credentials);
-    // TODO: call login API
+    try {
+      const response = await loginUser(credentials.username, credentials.password);
+      const token = response?.data?.access_token;
+      if (token) {
+        setToken(token);
+        alert('Login successful!');
+        navigate('/');
+      } else {
+        alert('Login failed. Please try again.');
+      }
+    } catch (err) {
+      alert('Invalid credentials.');
+    }
   };
 
   return (
