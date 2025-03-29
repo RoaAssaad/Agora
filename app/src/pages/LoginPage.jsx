@@ -1,17 +1,21 @@
 import { useState } from 'react';
-import { Form, Button, Card } from 'react-bootstrap';
+import { Form, Button, Card, InputGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import './AuthPages.css';
 import { loginUser } from '../services/UserService';
 import { setToken } from '../utility/Utility';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import './AuthPages.css';
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
+
+  const togglePassword = () => setShowPassword(!showPassword);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +29,7 @@ const LoginPage = () => {
       } else {
         alert('Login failed. Please try again.');
       }
-    } catch (err) {
+    } catch {
       alert('Invalid credentials.');
     }
   };
@@ -44,7 +48,7 @@ const LoginPage = () => {
             <Form.Group className="mb-3">
               <Form.Control
                 type="text"
-                placeholder="Email Address"
+                placeholder="Username"
                 name="username"
                 value={credentials.username}
                 onChange={handleChange}
@@ -53,19 +57,22 @@ const LoginPage = () => {
             </Form.Group>
 
             <Form.Group className="mb-4">
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                name="password"
-                value={credentials.password}
-                onChange={handleChange}
-                required
-              />
+              <InputGroup>
+                <Form.Control
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Password"
+                  name="password"
+                  value={credentials.password}
+                  onChange={handleChange}
+                  required
+                />
+                <InputGroup.Text onClick={togglePassword} role="button">
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </InputGroup.Text>
+              </InputGroup>
             </Form.Group>
 
-            <Button type="submit" className="w-100 btn-purple">
-              Log In
-            </Button>
+            <Button type="submit" className="w-100 btn-purple">Log In</Button>
           </Form>
 
           <p className="text-center mt-3">

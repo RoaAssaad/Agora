@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Form, Button, Container, Card } from 'react-bootstrap';
+import { Form, Button, Container, Card, InputGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import './AuthPages.css';
 import { registerUser } from '../services/UserService';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import './AuthPages.css';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const RegisterPage = () => {
     email: '',
     password: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData(prev => ({
@@ -18,6 +20,8 @@ const RegisterPage = () => {
       [e.target.name]: e.target.value,
     }));
   };
+
+  const togglePassword = () => setShowPassword(!showPassword);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -64,19 +68,22 @@ const RegisterPage = () => {
             </Form.Group>
 
             <Form.Group className="mb-4">
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
+              <InputGroup>
+                <Form.Control
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+                <InputGroup.Text onClick={togglePassword} role="button">
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </InputGroup.Text>
+              </InputGroup>
             </Form.Group>
 
-            <Button type="submit" className="w-100 btn-purple">
-              Create Account
-            </Button>
+            <Button type="submit" className="w-100 btn-purple">Create Account</Button>
           </Form>
 
           <p className="text-center mt-3">

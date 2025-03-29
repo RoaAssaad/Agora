@@ -16,7 +16,7 @@ export class AuthService {
     async register(username: string, email: string, password: string) {
         const existingUser = await this.usersRepository.findOne({ where: { username } });
         if (existingUser) {
-            throw new BadRequestException('Username already taken'); // ✅ Now it works!
+            throw new BadRequestException('Username already taken'); 
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -25,7 +25,7 @@ export class AuthService {
         const newUser = this.usersRepository.create({
             username,
             email,
-            password: hashedPassword, // ✅ Store hashed password
+            password: hashedPassword, //  Store hashed password
         });
 
         const savedUser = await this.usersRepository.save(newUser);

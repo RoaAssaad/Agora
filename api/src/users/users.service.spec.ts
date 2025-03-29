@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 
 const userArray = [
   {
-    id: '5cf36a79-4cc0-411f-a3ef-3062442e0169', // ✅ Use UUID
+    id: '5cf36a79-4cc0-411f-a3ef-3062442e0169', //  Use UUID
     username: 'testuser1',
     email: 'test1@example.com',
     password: 'securepassword',
@@ -14,7 +14,7 @@ const userArray = [
     created_at: new Date(),
   },
   {
-    id: '7de4d858-7f7b-46b2-a58d-4a94b7655f47', // ✅ Use UUID
+    id: '7de4d858-7f7b-46b2-a58d-4a94b7655f47', //  Use UUID
     username: 'testuser2',
     email: 'test2@example.com',
     password: 'securepassword',
