@@ -25,7 +25,8 @@ const LoginPage = () => {
       if (token) {
         setToken(token);
         alert('Login successful!');
-        navigate('/');
+        navigate('/home'); //  Redirect to Home Page after login
+      
       } else {
         alert('Login failed. Please try again.');
       }
