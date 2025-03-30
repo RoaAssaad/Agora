@@ -22,8 +22,8 @@ import {
   
     @UseGuards(JwtAuthGuard)
     @Post()
-    async create(@Body() dto: CreateCommunityDto, @Req() req: Request) {
-      const user = req.user as User;
+    create(@Body() dto: CreateCommunityDto, @Req() req: Request) {
+      const user = req.user as User; // this comes from JWT
       return this.communityService.create(dto, user);
     }
   
@@ -39,20 +39,16 @@ import {
   
     @UseGuards(JwtAuthGuard)
     @Patch(':id')
-    async update(
-      @Param('id') id: string,
-      @Body() dto: UpdateCommunityDto,
-      @Req() req: Request,
-    ) {
+    update(@Param('id') id: string, @Body() dto: UpdateCommunityDto, @Req() req: Request) {
       const user = req.user as User;
       return this.communityService.update(id, dto, user);
     }
-  
+    
     @UseGuards(JwtAuthGuard)
     @Delete(':id')
-    async remove(@Param('id') id: string, @Req() req: Request) {
-      const user = req.user as User;
-      return this.communityService.remove(id, user);
+    async remove(@Param('id') id: string, @Req() req) {
+      return this.communityService.remove(id, req.user);
     }
-  }
+    
+  }    
   

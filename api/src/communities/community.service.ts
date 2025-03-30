@@ -15,9 +15,10 @@ export class CommunityService {
 
   async create(createDto: CreateCommunityDto, creator: User): Promise<Community> {
     const community = this.communityRepository.create({
-      ...createDto,
-      creator,
-    });
+        ...createDto,
+        creator, 
+      });
+      
     return this.communityRepository.save(community);
   }
 
