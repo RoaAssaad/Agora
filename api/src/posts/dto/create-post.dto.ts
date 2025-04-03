@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+// src/posts/dto/create-post.dto.ts
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreatePostDto {
   @IsNotEmpty()
@@ -12,4 +13,8 @@ export class CreatePostDto {
   @IsNotEmpty()
   @IsString()
   communityId: string;
+
+  @IsOptional()
+  @IsString()
+  image?: string; //  optional base64 string
 }

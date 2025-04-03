@@ -37,6 +37,7 @@ const HomePage = () => {
                 post={{
                   title: post.title,
                   content: post.content,
+                  image: post.image || null, // ✅ Add this
                   time: new Date(post.created_at).toLocaleString(),
                   user: post.creator?.username || "Unknown",
                   community: `/r/${post.community?.name || "general"}`,

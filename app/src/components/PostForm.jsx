@@ -4,7 +4,7 @@ import { Form, Button, Card, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { createPost } from '../services/PostService';
 import { useCommunities } from '../context/CommunityContext';
-import "../pages/AuthPages.css";
+import '../pages/AuthPages.css';
 
 const PostForm = () => {
   const navigate = useNavigate();
@@ -14,6 +14,7 @@ const PostForm = () => {
     title: '',
     content: '',
     communityId: '',
+    image: '', // new field
   });
 
   const handleChange = (e) => {
@@ -21,6 +22,17 @@ const PostForm = () => {
       ...prev,
       [e.target.name]: e.target.value,
     }));
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFormData((prev) => ({ ...prev, image: reader.result }));
+    };
+    reader.readAsDataURL(file); // convert to base64
   };
 
   const handleSubmit = async (e) => {
@@ -64,7 +76,7 @@ const PostForm = () => {
               />
             </Form.Group>
 
-            <Form.Group className="mb-4">
+            <Form.Group className="mb-3">
               <Form.Select
                 name="communityId"
                 value={formData.communityId}
@@ -78,6 +90,14 @@ const PostForm = () => {
                   </option>
                 ))}
               </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-4">
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
             </Form.Group>
 
             <Button type="submit" className="w-100 btn-purple">
