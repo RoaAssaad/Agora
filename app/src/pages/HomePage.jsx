@@ -1,34 +1,16 @@
 // src/pages/HomePage.jsx
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Tabs from '../components/Tabs';
 import PostCard from '../components/PostCard';
+import { usePosts } from '../hooks/usePosts';
 import './HomePage.css';
-
-const dummyPosts = [
-  {
-    title: 'Should You Hold NVIDIA Stock or Trade It?',
-    image: 'https://via.placeholder.com/250x140.png?text=NVIDIA',
-    user: 'the_big_mothergoose',
-    community: '/r/Tech',
-    time: '6 hours ago',
-    votes: '13k',
-    comments: '214',
-  },
-  {
-    title: 'Playing the guitar!',
-    image: 'https://via.placeholder.com/250x140.png?text=Guitar',
-    user: 'bwa_ahki',
-    community: '/r/Music',
-    time: '45 minutes ago',
-    votes: '11.7k',
-    comments: '850',
-  },
-  // Add more post objects as needed
-];
 
 const HomePage = () => {
   const [tab, setTab] = useState('Popular');
+  const navigate = useNavigate();
+  const { posts, loading } = usePosts();
 
   return (
     <div className="homepage-container">
@@ -36,12 +18,35 @@ const HomePage = () => {
       <main className="main-content">
         <h4>All Communities</h4>
         <Tabs selected={tab} onSelect={setTab} />
-        <h5 className="section-heading">Find something interesting to discuss</h5>
-        <div className="post-grid">
-          {dummyPosts.map((post, idx) => (
-            <PostCard key={idx} post={post} />
-          ))}
+
+        <div className="d-flex justify-content-end mb-3">
+          <button className="btn btn-purple" onClick={() => navigate('/create-post')}>
+            + Create Post
+          </button>
         </div>
+
+        <h5 className="section-heading">Find something interesting to discuss</h5>
+
+        {loading ? (
+          <p>Loading posts...</p>
+        ) : (
+          <div className="post-grid">
+            {posts.map((post) => (
+              <PostCard
+                key={post.id}
+                post={{
+                  title: post.title,
+                  content: post.content,
+                  time: new Date(post.created_at).toLocaleString(),
+                  user: post.creator?.username || "Unknown",
+                  community: `/r/${post.community?.name || "general"}`,
+                  votes: 0,
+                  comments: 0,
+                }}
+              />
+            ))}
+          </div>
+        )}
       </main>
     </div>
   );

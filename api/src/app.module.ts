@@ -4,7 +4,8 @@ import { ConfigModule } from '@nestjs/config';
 
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { CommunityModule } from './communities/community.module'; //  Import module
+import { CommunityModule } from './communities/community.module'; 
+import { PostModule } from './posts/post.module';
 
 @Module({
   imports: [
@@ -19,13 +20,14 @@ import { CommunityModule } from './communities/community.module'; //  Import mod
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      autoLoadEntities: true, // Entities will auto-load
+      autoLoadEntities: true, 
       synchronize: true,
       logging: true,
     }),
     UsersModule,
     AuthModule,
-    CommunityModule, // Register CommunityModule
+    CommunityModule,
+    PostModule,
   ],
 })
 export class AppModule {}
