@@ -1,20 +1,36 @@
+/* src/components/Tabs.css */
+
 .tabs {
-    display: flex;
-    gap: 1.5rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 1rem;
-  }
-  
-  .tab {
-    cursor: pointer;
-    padding-bottom: 0.5rem;
-    color: #555;
-    font-weight: 500;
-  }
-  
-  .tab.active {
-    border-bottom: 3px solid #7b2cbf;
-    color: #7b2cbf;
-  }
-  
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+}
+
+.tab {
+  cursor: pointer;
+  padding: 0.5rem 1.2rem;
+  background-color: #f6f6f6;
+  border-radius: 30px;
+  color: #555;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  border: none;
+  outline: none;
+}
+
+.tab:hover {
+  background-color: #e2d7f3;
+  color: #7b2cbf;
+  box-shadow: 0 2px 8px rgba(123, 44, 191, 0.15);
+}
+
+.tab.active {
+  background-color: #7b2cbf;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 3px 10px rgba(123, 44, 191, 0.3);
+}

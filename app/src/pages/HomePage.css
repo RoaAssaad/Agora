@@ -1,24 +1,37 @@
-.home-page {
-    display: flex;
-    height: 100vh;
-    background-color: #f6f7f8;
-  }
-  
-  .main-content {
-    flex: 1;
-    padding: 2rem;
-    overflow-y: auto;
-  }
-  
-  .feed-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-  }
-  
+.homepage-container {
+  display: flex;
+  min-height: 100vh;
+  background: #f8f8ff;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2.5rem 3rem;
+  background-color: #fafafa;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.main-content h4 {
+  font-size: 1.5rem;
+  color: #444;
+  margin-bottom: 0.5rem;
+}
+
+.section-heading {
+  font-size: 1.2rem;
+  color: #7b2cbf;
+  margin: 1rem 0 1.5rem;
+}
+
+.post-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* Responsive: 2-column layout on wider screens */
+@media (min-width: 768px) {
   .post-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.2rem;
+    grid-template-columns: 1fr 1fr;
   }
-  
+}
