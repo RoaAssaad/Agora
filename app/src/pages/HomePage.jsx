@@ -33,18 +33,20 @@ const HomePage = () => {
           <div className="post-grid">
             {posts.map((post) => (
               <PostCard
-                key={post.id}
-                post={{
-                  title: post.title,
-                  content: post.content,
-                  image: post.image || null, // ✅ Add this
-                  time: new Date(post.created_at).toLocaleString(),
-                  user: post.creator?.username || "Unknown",
-                  community: `/r/${post.community?.name || "general"}`,
-                  votes: 0,
-                  comments: 0,
-                }}
-              />
+              key={post.id}
+              post={{
+                id: post.id, 
+                title: post.title,
+                content: post.content,
+                image: post.image || null,
+                time: new Date(post.created_at).toLocaleString(),
+                user: post.creator?.username || "Unknown",
+                community: `/c/${post.community?.name || "general"}`,
+                votes: post.votes || 0,
+                comments: 0,
+              }}
+            />
+            
             ))}
           </div>
         )}

@@ -85,9 +85,9 @@ const PostForm = () => {
               >
                 <option value="">Select a Community</option>
                 {communities.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    /r/{c.name}
-                  </option>
+                 <option key={c.id} value={c.id}>
+                 /c/{c.name}
+               </option>
                 ))}
               </Form.Select>
             </Form.Group>

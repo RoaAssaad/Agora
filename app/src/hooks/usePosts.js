@@ -9,7 +9,12 @@ export const usePosts = () => {
   useEffect(() => {
     fetchAllPosts()
       .then(res => {
-        setPosts(res.data);
+        // Ensure each post includes the 'votes' field
+        const formattedPosts = res.data.map(post => ({
+          ...post,
+          votes: post.votes || 0, // fallback if backend doesn't return it
+        }));
+        setPosts(formattedPosts);
         setLoading(false);
       })
       .catch(err => {

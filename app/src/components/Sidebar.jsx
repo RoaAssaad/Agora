@@ -24,7 +24,7 @@ const Sidebar = () => {
         <li><FaBell /> Notifications</li>
         <li><FaGamepad /> My Communities</li>
         {communities.map((c) => (
-          <li key={c.id}>/r/{c.name}</li>
+          <li key={c.id}>/c/{c.name}</li>
         ))}
         <li><FaSmile /> Funny</li>
         <li><FaTv /> Series</li>

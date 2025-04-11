@@ -1,4 +1,3 @@
-// src/posts/post.entity.ts
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -21,7 +20,10 @@ export class Post {
   content: string;
 
   @Column({ type: 'text', nullable: true })
-  image?: string; //  base64 image string
+  image?: string; // optional base64 image
+
+  @Column({ default: 0 })
+  votes: number; //  total vote count
 
   @CreateDateColumn()
   created_at: Date;

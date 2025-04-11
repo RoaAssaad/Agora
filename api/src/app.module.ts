@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { CommunityModule } from './communities/community.module'; 
 import { PostModule } from './posts/post.module';
+import { VoteModule } from './votes/vote.module'; 
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { PostModule } from './posts/post.module';
     AuthModule,
     CommunityModule,
     PostModule,
+    VoteModule,
   ],
 })
 export class AppModule {}
