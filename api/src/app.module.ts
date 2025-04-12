@@ -1,3 +1,4 @@
+// src/app.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
@@ -7,7 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { CommunityModule } from './communities/community.module'; 
 import { PostModule } from './posts/post.module';
 import { VoteModule } from './votes/vote.module'; 
-
+import { CommentModule } from './comments/comment.module'; 
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -30,6 +31,7 @@ import { VoteModule } from './votes/vote.module';
     CommunityModule,
     PostModule,
     VoteModule,
+    CommentModule, 
   ],
 })
 export class AppModule {}

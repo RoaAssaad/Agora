@@ -90,19 +90,19 @@ const PostCard = ({ post }) => {
               onChange={(e) => setNewComment(e.target.value)}
               className="comment-input"
             />
-            <button type="submit" className="btn-purple btn-sm">Post</button>
+            <button type="submit" className="comment-button">Post</button>
           </form>
 
-          <div className="comments-list">
+          <div className="comment-list">
             {loadingComments ? (
               <p className="text-muted small">Loading comments...</p>
             ) : comments.length === 0 ? (
               <p className="text-muted small">No comments yet</p>
             ) : (
               comments.map((comment) => (
-                <div key={comment.id} className="comment">
-                  <span className="comment-user">{comment.user.username}:</span>
-                  <span className="comment-text">{comment.content}</span>
+                <div key={comment.id} className="comment-item">
+                  <span className="comment-author">{comment.user.username}</span>
+                  {comment.content}
                 </div>
               ))
             )}

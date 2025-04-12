@@ -1,4 +1,3 @@
-// src/App.jsx
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -7,9 +6,10 @@ import CreatePostPage from './pages/CreatePostPage';
 import CreateCommunityPage from './pages/CreateCommunityPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import { CommunityProvider } from './context/CommunityContext';
+import CommunityPage from './pages/CommunityPage';
 
 function App() {
-  const isAuthenticated = !!localStorage.getItem('access_token'); // consistent with Utility.js
+  const isAuthenticated = !!localStorage.getItem('access_token');
 
   return (
     <CommunityProvider>
@@ -49,6 +49,16 @@ function App() {
             element={
               <ProtectedRoute>
                 <CreateCommunityPage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/*  New Community Page Route */}
+          <Route
+            path="/community/:name"
+            element={
+              <ProtectedRoute>
+                <CommunityPage />
               </ProtectedRoute>
             }
           />

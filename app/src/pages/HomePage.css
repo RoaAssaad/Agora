@@ -35,3 +35,22 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+.community-header {
+  background: #f5ecff;
+  padding: 1.5rem 2rem;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  box-shadow: 0 3px 12px rgba(123, 44, 191, 0.1);
+}
+
+.community-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #7b2cbf;
+  margin-bottom: 0.5rem;
+}
+
+.community-description {
+  font-size: 1rem;
+  color: #555;
+}
