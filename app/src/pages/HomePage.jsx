@@ -1,4 +1,3 @@
-// src/pages/HomePage.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
@@ -10,7 +9,7 @@ import './HomePage.css';
 const HomePage = () => {
   const [tab, setTab] = useState('Popular');
   const navigate = useNavigate();
-  const { posts, loading } = usePosts();
+  const { posts, loading } = usePosts(tab);
 
   return (
     <div className="homepage-container">
@@ -33,20 +32,20 @@ const HomePage = () => {
           <div className="post-grid">
             {posts.map((post) => (
               <PostCard
-              key={post.id}
-              post={{
-                id: post.id, 
-                title: post.title,
-                content: post.content,
-                image: post.image || null,
-                time: new Date(post.created_at).toLocaleString(),
-                user: post.creator?.username || "Unknown",
-                community: `/c/${post.community?.name || "general"}`,
-                votes: post.votes || 0,
-                comments: 0,
-              }}
-            />
-            
+                key={post.id}
+                post={{
+                  id: post.id,
+                  title: post.title,
+                  content: post.content,
+                  image: post.image || null,
+                  time: new Date(post.created_at).toLocaleString(),
+                  user: post.creator?.username || "Unknown",
+                  community: `/c/${post.community?.name || "general"}`,
+                  votes: post.votes || 0,
+                  userVote: post.userVote || 0,
+                  comments: 0,
+                }}
+              />
             ))}
           </div>
         )}

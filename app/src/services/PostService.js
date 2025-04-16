@@ -17,6 +17,6 @@ export const createPost = async (postData) => {
   });
 };
 
-export const fetchAllPosts = async () => {
-  return axios.get(API_URL);
+export const fetchAllPosts = async (sort = 'Popular') => {
+  return axios.get(`${API_URL}?sort=${sort}`);
 };

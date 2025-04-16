@@ -1,10 +1,11 @@
+// src/posts/post.service.ts
 import {
   Injectable,
   NotFoundException,
   ForbiddenException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, MoreThan } from 'typeorm';
 import { Post } from './post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -43,10 +44,31 @@ export class PostService {
     return this.postRepository.save(post);
   }
 
-  async findAll(currentUser?: User): Promise<any[]> {
+  async findAll(currentUser?: User, sort: string = 'Recent'): Promise<any[]> {
+    let order: any = {};
+    let where: any = {};
+
+    switch (sort) {
+      case 'Popular':
+      case 'Top':
+        order = { votes: 'DESC' };
+        break;
+      case 'Trending':
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        where = { created_at: MoreThan(yesterday) };
+        order = { votes: 'DESC' };
+        break;
+      case 'Recent':
+      default:
+        order = { created_at: 'DESC' };
+        break;
+    }
+
     const posts = await this.postRepository.find({
+      where,
+      order,
       relations: ['creator', 'community'],
-      order: { created_at: 'DESC' },
     });
 
     if (!currentUser) return posts;

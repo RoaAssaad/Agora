@@ -1,18 +1,17 @@
-// src/hooks/usePosts.js
 import { useEffect, useState } from 'react';
 import { fetchAllPosts } from '../services/PostService';
 
-export const usePosts = () => {
+export const usePosts = (sort = 'Popular') => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchAllPosts()
+    setLoading(true);
+    fetchAllPosts(sort)
       .then(res => {
-        // Ensure each post includes the 'votes' field
         const formattedPosts = res.data.map(post => ({
           ...post,
-          votes: post.votes || 0, // fallback if backend doesn't return it
+          votes: post.votes || 0,
         }));
         setPosts(formattedPosts);
         setLoading(false);
@@ -21,7 +20,7 @@ export const usePosts = () => {
         console.error('Failed to fetch posts:', err);
         setLoading(false);
       });
-  }, []);
+  }, [sort]);
 
   return { posts, loading };
 };

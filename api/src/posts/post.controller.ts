@@ -1,3 +1,4 @@
+// src/posts/post.controller.ts
 import {
   Controller,
   Get,
@@ -8,6 +9,7 @@ import {
   Delete,
   UseGuards,
   Request,
+  Query,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -18,34 +20,34 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
-  //  Public: Get all posts (with optional user context for votes)
+  // Public: Get all posts with optional sort query and user context for votes
   @Get()
-  async findAll(@Request() req) {
+  async findAll(@Query('sort') sort: string, @Request() req) {
     const user = req.user || null;
-    return this.postService.findAll(user);
+    return this.postService.findAll(user, sort);
   }
 
-  //  Public: Get single post by ID
+  // Public: Get single post by ID
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.postService.findOne(id);
   }
 
-  //  Protected: Create new post
+  // Protected: Create new post
   @UseGuards(JwtAuthGuard)
   @HttpPost()
   async create(@Body() dto: CreatePostDto, @Request() req) {
     return this.postService.create(dto, req.user);
   }
 
-  //  Protected: Update post (only by creator)
+  // Protected: Update post (only by creator)
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() dto: UpdatePostDto, @Request() req) {
     return this.postService.update(id, dto, req.user);
   }
 
-  //  Protected: Delete post (only by creator)
+  // Protected: Delete post (only by creator)
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string, @Request() req) {
