@@ -22,11 +22,16 @@ const LoginPage = () => {
     try {
       const response = await loginUser(credentials.username, credentials.password);
       const token = response?.data?.access_token;
-      if (token) {
+      const user = response?.data?.user;
+
+      if (token && user) {
         setToken(token);
+        localStorage.setItem('user_id', user.id);
+        localStorage.setItem('username', user.username);
+        localStorage.setItem('email', user.email);
+
         alert('Login successful!');
-        navigate('/home'); //  Redirect to Home Page after login
-      
+        navigate('/home');
       } else {
         alert('Login failed. Please try again.');
       }

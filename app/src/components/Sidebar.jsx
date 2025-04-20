@@ -1,33 +1,45 @@
+// src/components/Sidebar.jsx
 import {
   FaHome,
-  FaBell,
   FaGamepad,
-  FaSmile,
-  FaTv,
   FaPlusCircle,
-  FaQuestionCircle,
-  FaAppStore,
+  FaSearch,
+  FaUserCircle,
 } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useCommunities } from '../context/CommunityContext';
+import { useUser } from '../context/UserContext';
 import './Sidebar.css';
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const { communities } = useCommunities();
-  const username = localStorage.getItem('username') || 'User';
+  const { user } = useUser();
 
   return (
     <div className="sidebar">
       <div className="logo">Agora</div>
-      <div className="username">Hello, {username}</div>
+      <div className="username">Hello, {user?.username || 'User'}</div>
 
-      <input type="text" className="search-bar" placeholder="Search communities..." />
+      <div className="search-wrapper">
+        <FaSearch className="search-icon" />
+        <input
+          type="text"
+          className="search-bar"
+          placeholder="Search communities..."
+        />
+      </div>
 
       <ul className="nav-links">
-        <li onClick={() => navigate('/home')}><FaHome /> Home</li>
-        <li><FaBell /> Notifications</li>
-        <li><FaGamepad /> My Communities</li>
+        <li onClick={() => navigate('/home')}>
+          <FaHome /> Home
+        </li>
+        <li onClick={() => navigate('/profile')}>
+          <FaUserCircle /> My Profile
+        </li>
+        <li>
+          <FaGamepad /> My Communities
+        </li>
 
         {communities.map((c) => (
           <li key={c.id} onClick={() => navigate(`/community/${c.name}`)}>
@@ -35,18 +47,12 @@ const Sidebar = () => {
           </li>
         ))}
 
-        <li><FaSmile /> Funny</li>
-        <li><FaTv /> Series</li>
-
         <li onClick={() => navigate('/create-community')}>
           <FaPlusCircle /> Create Community
         </li>
       </ul>
 
-      <ul className="footer-links">
-        <li><FaQuestionCircle /> Help</li>
-        <li><FaAppStore /> Apps & Tools</li>
-      </ul>
+      <ul className="footer-links"></ul>
     </div>
   );
 };

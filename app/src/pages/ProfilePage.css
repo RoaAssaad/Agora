@@ -1,0 +1,93 @@
+/* src/pages/ProfilePage.css */
+.profile-page-wrapper {
+  display: flex;
+  background: #f9f6ff;
+  min-height: 100vh;
+}
+
+.profile-container {
+  flex: 1;
+  padding: 2rem 3rem;
+}
+
+.profile-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(123, 44, 191, 0.1);
+  padding: 2rem;
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.profile-image-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #7b2cbf;
+  box-shadow: 0 2px 8px rgba(123, 44, 191, 0.2);
+}
+
+.upload-icon {
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  background: #7b2cbf;
+  color: white;
+  border-radius: 50%;
+  padding: 6px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-title {
+  font-size: 1.5rem;
+  color: #7b2cbf;
+  margin-bottom: 0.75rem;
+}
+
+.profile-info p {
+  margin: 0.25rem 0;
+  font-size: 1rem;
+  color: #444;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  color: #6a1fbf;
+  margin-bottom: 1rem;
+}
+
+.post-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .post-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.no-posts {
+  color: #999;
+  font-style: italic;
+}

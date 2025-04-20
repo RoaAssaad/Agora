@@ -17,28 +17,36 @@ export class UsersService {
     const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
 
     const user = this.usersRepository.create({
-        ...createUserDto,
-        password: hashedPassword, //  Store hashed password
+      ...createUserDto,
+      password: hashedPassword,
     });
 
     return this.usersRepository.save(user);
-}
-
+  }
 
   async findAll(): Promise<Omit<User, 'password'>[]> {
     const users = await this.usersRepository.find();
     return users.map(({ password, ...user }) => user);
   }
 
-  async findOne(id: string): Promise<Omit<User, 'password'> | null> {
+  async findOne(id: string): Promise<Omit<User, 'password'>> {
     const user = await this.usersRepository.findOneBy({ id });
     if (!user) {
       throw new NotFoundException('User not found.');
     }
-
-    // Return user without password
     const { password, ...result } = user;
     return result;
+  }
+
+  async getMe(userId: string): Promise<Omit<User, 'password'>> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      select: ['id', 'username', 'email', 'created_at', 'profileImage'],
+    });
+    if (!user) throw new NotFoundException('User not found');
+
+    const { password, ...rest } = user;
+    return rest;
   }
 
   async remove(id: string): Promise<void> {
@@ -47,5 +55,15 @@ export class UsersService {
       throw new NotFoundException('User not found.');
     }
     await this.usersRepository.delete(id);
+  }
+
+  async updateProfileImage(userId: string, base64: string): Promise<Omit<User, 'password'>> {
+    const user = await this.usersRepository.findOneBy({ id: userId });
+    if (!user) throw new NotFoundException('User not found');
+
+    user.profileImage = base64;
+    const saved = await this.usersRepository.save(user);
+    const { password, ...result } = saved;
+    return result;
   }
 }

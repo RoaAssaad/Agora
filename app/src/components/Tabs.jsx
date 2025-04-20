@@ -2,7 +2,7 @@
 import './Tabs.css';
 
 const Tabs = ({ selected, onSelect }) => {
-  const tabs = ['Popular', 'Trending', 'Recent', 'Top'];
+  const tabs = ['Popular', 'Recent', 'Top'];
 
   return (
     <div className="tabs">

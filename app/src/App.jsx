@@ -4,70 +4,80 @@ import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
 import CreatePostPage from './pages/CreatePostPage';
 import CreateCommunityPage from './pages/CreateCommunityPage';
+import CommunityPage from './pages/CommunityPage';
+import ProfilePage from './pages/ProfilePage';
 import ProtectedRoute from './components/ProtectedRoute';
 import { CommunityProvider } from './context/CommunityContext';
-import CommunityPage from './pages/CommunityPage';
+import { UserProvider } from './context/UserContext';
 
 function App() {
   const isAuthenticated = !!localStorage.getItem('access_token');
 
   return (
-    <CommunityProvider>
-      <Router>
-        <Routes>
-          {/* Root: redirect based on login status */}
-          <Route
-            path="/"
-            element={
-              isAuthenticated ? <Navigate to="/home" replace /> : <Navigate to="/login" replace />
-            }
-          />
+    <UserProvider>
+      <CommunityProvider>
+        <Router>
+          <Routes>
+            {/* Redirect root path based on login */}
+            <Route
+              path="/"
+              element={
+                isAuthenticated ? <Navigate to="/home" replace /> : <Navigate to="/login" replace />
+              }
+            />
 
-          {/* Public Routes */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+            {/* Public Routes */}
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
 
-          {/* Protected Routes */}
-          <Route
-            path="/home"
-            element={
-              <ProtectedRoute>
-                <HomePage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/create-post"
-            element={
-              <ProtectedRoute>
-                <CreatePostPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/create-community"
-            element={
-              <ProtectedRoute>
-                <CreateCommunityPage />
-              </ProtectedRoute>
-            }
-          />
+            {/* Protected Routes */}
+            <Route
+              path="/home"
+              element={
+                <ProtectedRoute>
+                  <HomePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/create-post"
+              element={
+                <ProtectedRoute>
+                  <CreatePostPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/create-community"
+              element={
+                <ProtectedRoute>
+                  <CreateCommunityPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/community/:name"
+              element={
+                <ProtectedRoute>
+                  <CommunityPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
 
-          {/*  New Community Page Route */}
-          <Route
-            path="/community/:name"
-            element={
-              <ProtectedRoute>
-                <CommunityPage />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Fallback: redirect unknown paths to root */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Router>
-    </CommunityProvider>
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Router>
+      </CommunityProvider>
+    </UserProvider>
   );
 }
 
