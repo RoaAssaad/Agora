@@ -9,12 +9,26 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useCommunities } from '../context/CommunityContext';
 import { useUser } from '../context/UserContext';
+import { useState } from 'react';
 import './Sidebar.css';
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const { communities } = useCommunities();
   const { user } = useUser();
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showResults, setShowResults] = useState(false);
+
+  const filteredCommunities = communities.filter((c) =>
+    c.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleSelect = (name) => {
+    setSearchQuery('');
+    setShowResults(false);
+    navigate(`/community/${name}`);
+  };
 
   return (
     <div className="sidebar">
@@ -27,7 +41,27 @@ const Sidebar = () => {
           type="text"
           className="search-bar"
           placeholder="Search communities..."
+          value={searchQuery}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            setShowResults(true);
+          }}
+          onBlur={() => setTimeout(() => setShowResults(false), 200)}
+          onFocus={() => setShowResults(true)}
         />
+        {showResults && searchQuery.length > 0 && (
+          <ul className="search-results">
+            {filteredCommunities.length > 0 ? (
+              filteredCommunities.map((c) => (
+                <li key={c.id} onClick={() => handleSelect(c.name)}>
+                  /c/{c.name}
+                </li>
+              ))
+            ) : (
+              <li className="no-results">No matches</li>
+            )}
+          </ul>
+        )}
       </div>
 
       <ul className="nav-links">

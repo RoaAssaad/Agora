@@ -6,7 +6,7 @@ import * as bodyParser from 'body-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // 🔧 Increase JSON body size limit to 10MB
+  //  Increase JSON body size limit to 10MB
   app.use(bodyParser.json({ limit: '10mb' }));
   app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
