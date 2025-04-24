@@ -12,6 +12,12 @@ export class UsersService {
     private readonly usersRepository: Repository<User>,
   ) {}
 
+  /**
+   * Creates a new user with hashed password.
+   * @param createUserDto - The user details from registration.
+   * @returns The created user (with hashed password).
+   */
+
   async create(createUserDto: CreateUserDto): Promise<User> {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
@@ -24,10 +30,21 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
+  /**
+   * Returns all users with passwords excluded.
+   */
+
   async findAll(): Promise<Omit<User, 'password'>[]> {
     const users = await this.usersRepository.find();
     return users.map(({ password, ...user }) => user);
   }
+
+    /**
+   * Finds a user by ID.
+   * @param id - User ID.
+   * @returns The user without password field.
+   * @throws NotFoundException if user does not exist.
+   */
 
   async findOne(id: string): Promise<Omit<User, 'password'>> {
     const user = await this.usersRepository.findOneBy({ id });
@@ -37,6 +54,12 @@ export class UsersService {
     const { password, ...result } = user;
     return result;
   }
+
+    /**
+   * Returns limited details about the current logged-in user.
+   * @param userId - ID of the authenticated user.
+   * @returns User details excluding password.
+   */
 
   async getMe(userId: string): Promise<Omit<User, 'password'>> {
     const user = await this.usersRepository.findOne({
@@ -49,6 +72,12 @@ export class UsersService {
     return rest;
   }
 
+    /**
+   * Deletes a user by ID.
+   * @param id - ID of the user to delete.
+   * @throws NotFoundException if the user does not exist.
+   */
+
   async remove(id: string): Promise<void> {
     const user = await this.usersRepository.findOneBy({ id });
     if (!user) {
@@ -56,6 +85,13 @@ export class UsersService {
     }
     await this.usersRepository.delete(id);
   }
+
+    /**
+   * Updates the profile image of a user.
+   * @param userId - ID of the user.
+   * @param base64 - Base64 string of the image.
+   * @returns Updated user object without password.
+   */
 
   async updateProfileImage(userId: string, base64: string): Promise<Omit<User, 'password'>> {
     const user = await this.usersRepository.findOneBy({ id: userId });

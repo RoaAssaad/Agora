@@ -19,24 +19,35 @@ import {
   @Controller('communities')
   export class CommunityController {
     constructor(private readonly communityService: CommunityService) {}
-  
+    /**
+   * Protected route: Create a new community.
+   */
     @UseGuards(JwtAuthGuard)
     @Post()
     create(@Body() dto: CreateCommunityDto, @Req() req: Request) {
       const user = req.user as User; // this comes from JWT
       return this.communityService.create(dto, user);
     }
-  
+      /**
+   * Public route: Get all communities.
+   */
+
     @Get()
     async findAll() {
       return this.communityService.findAll();
     }
-  
+
+    /**
+   * Public route: Get a single community by ID.
+   */
     @Get(':id')
     async findOne(@Param('id') id: string) {
       return this.communityService.findOne(id);
     }
-  
+
+    /**
+   * Protected route: Update community (only by creator).
+   */
     @UseGuards(JwtAuthGuard)
     @Patch(':id')
     update(@Param('id') id: string, @Body() dto: UpdateCommunityDto, @Req() req: Request) {
@@ -44,6 +55,9 @@ import {
       return this.communityService.update(id, dto, user);
     }
     
+  /**
+   * Protected route: Delete community (only by creator).
+   */
     @UseGuards(JwtAuthGuard)
     @Delete(':id')
     async remove(@Param('id') id: string, @Req() req) {

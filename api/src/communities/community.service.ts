@@ -13,6 +13,12 @@ export class CommunityService {
     private communityRepository: Repository<Community>,
   ) {}
 
+    /**
+   * Creates a new community.
+   * @param createDto - DTO containing name, title, description.
+   * @param creator - The user creating the community.
+   */
+
   async create(createDto: CreateCommunityDto, creator: User): Promise<Community> {
     const community = this.communityRepository.create({
         ...createDto,
@@ -21,10 +27,16 @@ export class CommunityService {
       
     return this.communityRepository.save(community);
   }
-
+    /**
+   * Retrieves all communities with their creator info.
+   */
   async findAll(): Promise<Community[]> {
     return this.communityRepository.find({ relations: ['creator'] });
   }
+    /**
+   * Finds a community by ID.
+   * @throws NotFoundException if not found.
+   */
 
   async findOne(id: string): Promise<Community> {
     const community = await this.communityRepository.findOne({
@@ -36,6 +48,9 @@ export class CommunityService {
     }
     return community;
   }
+    /**
+   * Updates a community (creator-only).
+   */
 
   async update(id: string, updateDto: UpdateCommunityDto, user: User): Promise<Community> {
     const community = await this.findOne(id);
@@ -48,6 +63,9 @@ export class CommunityService {
     Object.assign(community, updateDto);
     return this.communityRepository.save(community);
   }
+    /**
+   * Deletes a community (creator-only).
+   */
 
   async remove(id: string, user: User): Promise<void> {
     const community = await this.findOne(id);

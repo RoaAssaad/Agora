@@ -13,6 +13,15 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) {}
 
+      /**
+   * Registers a new user with hashed password and returns basic info.
+   * @param username - Unique username for the user.
+   * @param email - Email address of the user.
+   * @param password - Plain-text password.
+   * @returns A message and the saved user object (without password).
+   * @throws BadRequestException if username is already taken.
+   */
+
     async register(username: string, email: string, password: string) {
         const existingUser = await this.usersRepository.findOne({ where: { username } });
         if (existingUser) {
@@ -37,6 +46,13 @@ export class AuthService {
         };
     }
 
+      /**
+   * Validates user credentials.
+   * @param username - Username entered by user.
+   * @param pass - Plain-text password entered.
+   * @returns The user object without password if valid, else null.
+   */
+
     async validateUser(username: string, pass: string): Promise<any> {
         const user = await this.usersRepository.findOne({ where: { username } });
 
@@ -46,6 +62,14 @@ export class AuthService {
         }
         return null;
     }
+
+      /**
+   * Authenticates user and returns JWT token and user info.
+   * @param username - Username entered.
+   * @param password - Password entered.
+   * @returns Access token and user object.
+   * @throws UnauthorizedException if credentials are invalid.
+   */
 
     async login(username: string, password: string) {
         const user = await this.validateUser(username, password);

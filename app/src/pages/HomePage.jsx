@@ -5,6 +5,14 @@ import Tabs from '../components/Tabs';
 import PostCard from '../components/PostCard';
 import { usePosts } from '../hooks/usePosts';
 import './HomePage.css';
+/**
+ * Main feed view of Agora.
+ * Uses:
+ *  - `Sidebar`
+ *  - `usePosts()` for sorted post list
+ *  - `Tabs` for sorting control
+ *  - `PostCard` to display each post
+ */
 
 const HomePage = () => {
   const [tab, setTab] = useState('Popular');

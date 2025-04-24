@@ -4,6 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../services/UserService';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import './AuthPages.css';
+/**
+ * Full registration page with password toggle.
+ * Uses `registerUser()` to send new account data to backend.
+ * Navigates to `/login` on success.
+ */
 
 const RegisterPage = () => {
   const navigate = useNavigate();

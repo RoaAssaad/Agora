@@ -4,6 +4,15 @@ import { FaArrowUp, FaArrowDown, FaComment } from 'react-icons/fa';
 import { voteOnPost } from '../services/VoteService';
 import { fetchCommentsByPost, createComment } from '../services/CommentService';
 import './PostCard.css';
+/**
+ * Displays a single post with voting, comments, and content.
+ * Props:
+ *  - post: { id, title, content, image, time, user, community, votes, userVote }
+ * Handles:
+ *  - Upvote/Downvote logic with backend
+ *  - Display + creation of comments
+ */
+
 
 const PostCard = ({ post }) => {
   const [voteCount, setVoteCount] = useState(post.votes);

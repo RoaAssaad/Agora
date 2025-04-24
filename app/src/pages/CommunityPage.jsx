@@ -4,6 +4,16 @@ import Sidebar from '../components/Sidebar';
 import PostCard from '../components/PostCard';
 import axios from 'axios';
 import './HomePage.css'; // Reuse layout styles
+/**
+ * Displays a single community page.
+ * Fetches:
+ *  - All communities (to match name param)
+ *  - All posts (filtered by community)
+ * Shows:
+ *  - Header with name and description
+ *  - Posts in this community using PostCard
+ */
+
 
 const CommunityPage = () => {
   const { name } = useParams();

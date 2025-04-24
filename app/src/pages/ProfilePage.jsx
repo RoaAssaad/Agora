@@ -7,6 +7,12 @@ import PostCard from '../components/PostCard';
 import Sidebar from '../components/Sidebar';
 import './ProfilePage.css';
 import { FaPlus } from 'react-icons/fa';
+/**
+ * Displays user profile and their posts.
+ * Allows profile image upload (base64).
+ * Filters posts from all posts by user ID.
+ */
+
 
 const ProfilePage = () => {
   const { user, updateProfileImage } = useUser();

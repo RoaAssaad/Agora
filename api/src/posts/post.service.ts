@@ -26,6 +26,14 @@ export class PostService {
     private voteRepository: Repository<Vote>,
   ) {}
 
+    /**
+   * Creates a new post within a community.
+   * @param createDto - Data transfer object for post creation.
+   * @param user - The user creating the post.
+   * @returns The created post.
+   * @throws NotFoundException if the community does not exist.
+   */
+
   async create(createDto: CreatePostDto, user: User): Promise<Post> {
     const community = await this.communityRepository.findOne({
       where: { id: createDto.communityId },
@@ -43,6 +51,13 @@ export class PostService {
 
     return this.postRepository.save(post);
   }
+
+    /**
+   * Fetches all posts with optional sorting and user vote context.
+   * @param currentUser - The currently logged-in user (optional).
+   * @param sort - Sort method: 'Recent' | 'Popular' | 'Top' | .
+   * @returns An array of posts with optional userVote field.
+   */
 
   async findAll(currentUser?: User, sort: string = 'Recent'): Promise<any[]> {
     let order: any = {};
@@ -72,7 +87,7 @@ export class PostService {
     });
 
     if (!currentUser) return posts;
-
+    // Fetch user's vote history
     const votes = await this.voteRepository.find({
       where: { user: { id: currentUser.id } },
       relations: ['post'],
@@ -86,6 +101,13 @@ export class PostService {
     }));
   }
 
+    /**
+   * Finds a single post by ID with relations.
+   * @param id - Post ID.
+   * @returns The post object.
+   * @throws NotFoundException if the post is not found.
+   */
+
   async findOne(id: string): Promise<Post> {
     const post = await this.postRepository.findOne({
       where: { id },
@@ -98,7 +120,14 @@ export class PostService {
 
     return post;
   }
-
+    /**
+   * Updates a post if the requesting user is the creator.
+   * @param id - ID of the post to update.
+   * @param updateDto - Updated post content.
+   * @param user - The user requesting the update.
+   * @returns The updated post.
+   * @throws ForbiddenException if the user is not the post creator.
+   */
   async update(id: string, updateDto: UpdatePostDto, user: User): Promise<Post> {
     const post = await this.findOne(id);
 
@@ -109,7 +138,12 @@ export class PostService {
     Object.assign(post, updateDto);
     return this.postRepository.save(post);
   }
-
+    /**
+   * Deletes a post if the requesting user is the creator.
+   * @param id - ID of the post to delete.
+   * @param user - The user requesting deletion.
+   * @throws ForbiddenException if the user is not allowed to delete the post.
+   */
   async remove(id: string, user: User): Promise<void> {
     const post = await this.findOne(id);
 

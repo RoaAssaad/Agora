@@ -21,6 +21,11 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   // Public: Get all posts with optional sort query and user context for votes
+    /**
+   * Public route to fetch all posts.
+   * @param sort - Sorting query ('Recent', 'Popular', etc.)
+   * @param req - Request object to extract user (if authenticated)
+   */
   @Get()
   async findAll(@Query('sort') sort: string, @Request() req) {
     const user = req.user || null;
@@ -28,12 +33,18 @@ export class PostController {
   }
 
   // Public: Get single post by ID
+    /**
+   * Public route to fetch a single post by ID.
+   */
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.postService.findOne(id);
   }
 
   // Protected: Create new post
+    /**
+   * Protected route to create a new post.
+   */
   @UseGuards(JwtAuthGuard)
   @HttpPost()
   async create(@Body() dto: CreatePostDto, @Request() req) {
@@ -41,6 +52,9 @@ export class PostController {
   }
 
   // Protected: Update post (only by creator)
+    /**
+   * Protected route to update an existing post by its creator.
+   */
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() dto: UpdatePostDto, @Request() req) {
@@ -48,6 +62,9 @@ export class PostController {
   }
 
   // Protected: Delete post (only by creator)
+    /**
+   * Protected route to delete a post (creator only).
+   */
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string, @Request() req) {

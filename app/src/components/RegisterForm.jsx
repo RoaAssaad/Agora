@@ -2,7 +2,12 @@
 import { useState } from 'react';
 import { Form, Button, Card, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import './FormStyles.css'; // We'll style the form here
+import './FormStyles.css'; 
+/**
+ * Basic registration form component.
+ * Uses internal state for form fields.
+ * On submit, currently just logs the result and navigates.
+ */
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -18,7 +23,7 @@ const RegisterForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: connect to backend registration
+    
     console.log('Submitted:', formData);
     alert('Account created successfully!');
     navigate('/login');

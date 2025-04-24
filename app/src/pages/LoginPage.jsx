@@ -5,6 +5,11 @@ import { loginUser } from '../services/UserService';
 import { setToken } from '../utility/Utility';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import './AuthPages.css';
+/**
+ * Full login page with password toggle, styled layout.
+ * Uses `loginUser()` and `setToken()` on submit.
+ * Stores user data in localStorage and redirects to `/home`.
+ */
 
 const LoginPage = () => {
   const navigate = useNavigate();

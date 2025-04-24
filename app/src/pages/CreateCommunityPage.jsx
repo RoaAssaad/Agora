@@ -4,6 +4,12 @@ import { Form, Button, Card, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { createCommunity } from '../services/CommunityService';
 import './AuthPages.css';
+/**
+ * Form to create a new community.
+ * Fields: name (URL-safe), title (display), description.
+ * On submit: calls `createCommunity()` and redirects to home.
+ */
+
 
 const CreateCommunityPage = () => {
   const navigate = useNavigate();

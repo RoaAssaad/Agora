@@ -11,6 +11,14 @@ import { useCommunities } from '../context/CommunityContext';
 import { useUser } from '../context/UserContext';
 import { useState } from 'react';
 import './Sidebar.css';
+/**
+ * Displays sidebar navigation with:
+ *  - Community links (fetched from context)
+ *  - Logged-in username
+ *  - Community search with live filter
+ *  - Navigation options: Home, Profile, Create
+ */
+
 
 const Sidebar = () => {
   const navigate = useNavigate();

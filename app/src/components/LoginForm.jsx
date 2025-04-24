@@ -3,7 +3,11 @@ import { useState } from 'react';
 import { Form, Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import './FormStyles.css';
-
+/**
+ * A standalone login form used inside styled containers.
+ * Controlled with useState for `username` and `password`.
+ * On submission, currently shows a success message and redirects.
+ */
 const LoginForm = () => {
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState({

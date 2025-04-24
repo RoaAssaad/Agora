@@ -5,6 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import { createPost } from '../services/PostService';
 import { useCommunities } from '../context/CommunityContext';
 import '../pages/AuthPages.css';
+/**
+ * Page for creating a new post.
+ * Includes title, content, optional image upload (base64), and community dropdown.
+ * Uses:
+ *  - `useCommunities()` for community list
+ *  - `createPost()` for post submission
+ */
 
 const PostForm = () => {
   const navigate = useNavigate();
