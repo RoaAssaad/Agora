@@ -1,4 +1,3 @@
-// src/components/Sidebar.jsx
 import {
   FaHome,
   FaGamepad,
@@ -8,22 +7,14 @@ import {
 } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useCommunities } from '../context/CommunityContext';
-import { useUser } from '../context/UserContext';
+import { useAppSelector } from '../app/hooks';
 import { useState } from 'react';
 import './Sidebar.css';
-/**
- * Displays sidebar navigation with:
- *  - Community links (fetched from context)
- *  - Logged-in username
- *  - Community search with live filter
- *  - Navigation options: Home, Profile, Create
- */
-
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const { communities } = useCommunities();
-  const { user } = useUser();
+  const user = useAppSelector((state) => state.user);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [showResults, setShowResults] = useState(false);
@@ -93,8 +84,6 @@ const Sidebar = () => {
           <FaPlusCircle /> Create Community
         </li>
       </ul>
-
-      <ul className="footer-links"></ul>
     </div>
   );
 };

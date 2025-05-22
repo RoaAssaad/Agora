@@ -1,21 +1,16 @@
-// src/pages/ProfilePage.jsx
 import { useEffect, useState } from 'react';
-import { useUser } from '../context/UserContext';
+import { useAppSelector, useAppDispatch } from '../app/hooks';
+import { updateProfileImage } from '../features/user/userSlice';
 import { fetchAllPosts } from '../services/PostService';
 import { uploadProfileImage } from '../services/UserService';
 import PostCard from '../components/PostCard';
 import Sidebar from '../components/Sidebar';
 import './ProfilePage.css';
 import { FaPlus } from 'react-icons/fa';
-/**
- * Displays user profile and their posts.
- * Allows profile image upload (base64).
- * Filters posts from all posts by user ID.
- */
-
 
 const ProfilePage = () => {
-  const { user, updateProfileImage } = useUser();
+  const user = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
   const [userPosts, setUserPosts] = useState([]);
   const [profileImage, setProfileImage] = useState(user?.profileImage || null);
 
@@ -36,7 +31,7 @@ const ProfilePage = () => {
     reader.onloadend = async () => {
       const base64 = reader.result;
       setProfileImage(base64);
-      updateProfileImage(base64);
+      dispatch(updateProfileImage(base64));
       await uploadProfileImage(base64);
     };
     reader.readAsDataURL(file);
@@ -63,9 +58,8 @@ const ProfilePage = () => {
             <p><strong>Username:</strong> {user?.username}</p>
             <p><strong>Email:</strong> {user?.email}</p>
             {user?.created_at && (
-  <p><strong>Joined:</strong> {new Date(user.created_at).toLocaleDateString()}</p>
-)}
-
+              <p><strong>Joined:</strong> {new Date(user.created_at).toLocaleDateString()}</p>
+            )}
           </div>
         </div>
 

@@ -4,15 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../services/UserService';
 import { setToken } from '../utility/Utility';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useAppDispatch } from '../app/hooks';
+import { login } from '../features/user/userSlice';
 import './AuthPages.css';
-/**
- * Full login page with password toggle, styled layout.
- * Uses `loginUser()` and `setToken()` on submit.
- * Stores user data in localStorage and redirects to `/home`.
- */
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
 
@@ -31,16 +30,15 @@ const LoginPage = () => {
 
       if (token && user) {
         setToken(token);
-        localStorage.setItem('user_id', user.id);
-        localStorage.setItem('username', user.username);
-        localStorage.setItem('email', user.email);
+        dispatch(login(user)); //  Redux update
 
         alert('Login successful!');
         navigate('/home');
       } else {
         alert('Login failed. Please try again.');
       }
-    } catch {
+    } catch (error) {
+      console.error('Login error:', error.response?.data || error.message || error);
       alert('Invalid credentials.');
     }
   };
@@ -83,12 +81,18 @@ const LoginPage = () => {
               </InputGroup>
             </Form.Group>
 
-            <Button type="submit" className="w-100 btn-purple">Log In</Button>
+            <Button type="submit" className="w-100 btn-purple">
+              Log In
+            </Button>
           </Form>
 
           <p className="text-center mt-3">
             Don’t have an account?{' '}
-            <span className="link-purple" onClick={() => navigate('/register')} role="button">
+            <span
+              className="link-purple"
+              onClick={() => navigate('/register')}
+              role="button"
+            >
               Register
             </span>
           </p>
