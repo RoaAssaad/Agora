@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchAllPosts } from '../../services/PostService';
+import { voteOnPost } from '../../services/VoteService';
 
 const initialState = {
   posts: [],
@@ -7,7 +8,7 @@ const initialState = {
   error: null,
 };
 
-// Thunk to fetch posts with sorting (Popular, Recent, etc.)
+// Fetch posts with sorting
 export const fetchPosts = createAsyncThunk(
   'posts/fetchPosts',
   async (sort = 'Popular', thunkAPI) => {
@@ -20,12 +21,23 @@ export const fetchPosts = createAsyncThunk(
   }
 );
 
+// Vote on a post and update the post state
+export const voteOnPostThunk = createAsyncThunk(
+  'posts/voteOnPost',
+  async ({ postId, value }, thunkAPI) => {
+    try {
+      const data = await voteOnPost(postId, value);
+      return { postId, value, updatedVoteCount: data.votes };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data || 'Vote failed');
+    }
+  }
+);
+
 const postSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {
-    // Add reducers for voting or comment count updates later if needed
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchPosts.pending, (state) => {
@@ -39,6 +51,14 @@ const postSlice = createSlice({
       .addCase(fetchPosts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Error loading posts';
+      })
+      .addCase(voteOnPostThunk.fulfilled, (state, action) => {
+        const { postId, value, updatedVoteCount } = action.payload;
+        const post = state.posts.find((p) => p.id === postId);
+        if (post) {
+          post.userVote = value;
+          post.votes = updatedVoteCount;
+        }
       });
   },
 });

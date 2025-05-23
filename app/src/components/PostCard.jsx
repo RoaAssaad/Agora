@@ -1,22 +1,12 @@
-// src/components/PostCard.jsx
 import { useEffect, useState } from 'react';
 import { FaArrowUp, FaArrowDown, FaComment } from 'react-icons/fa';
-import { voteOnPost } from '../services/VoteService';
+import { useAppDispatch } from '../app/hooks';
+import { voteOnPostThunk } from '../features/posts/postSlice';
 import { fetchCommentsByPost, createComment } from '../services/CommentService';
 import './PostCard.css';
-/**
- * Displays a single post with voting, comments, and content.
- * Props:
- *  - post: { id, title, content, image, time, user, community, votes, userVote }
- * Handles:
- *  - Upvote/Downvote logic with backend
- *  - Display + creation of comments
- */
-
 
 const PostCard = ({ post }) => {
-  const [voteCount, setVoteCount] = useState(post.votes);
-  const [userVote, setUserVote] = useState(post.userVote || 0);
+  const dispatch = useAppDispatch();
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [loadingComments, setLoadingComments] = useState(false);
@@ -37,15 +27,9 @@ const PostCard = ({ post }) => {
     }
   };
 
-  const handleVote = async (value) => {
-    const newVote = userVote === value ? 0 : value;
-    try {
-      await voteOnPost(post.id, newVote);
-      setUserVote(newVote);
-      setVoteCount((prev) => prev + (newVote - userVote));
-    } catch (err) {
-      alert('Failed to vote.');
-    }
+  const handleVote = (value) => {
+    const newVote = post.userVote === value ? 0 : value;
+    dispatch(voteOnPostThunk({ postId: post.id, value: newVote }));
   };
 
   const handleCommentSubmit = async (e) => {
@@ -74,13 +58,13 @@ const PostCard = ({ post }) => {
 
         <div className="post-engagement">
           <button
-            className={`vote-button ${userVote === 1 ? 'active' : ''}`}
+            className={`vote-button ${post.userVote === 1 ? 'active' : ''}`}
             onClick={() => handleVote(1)}
           >
-            <FaArrowUp /> {voteCount}
+            <FaArrowUp /> {post.votes}
           </button>
           <button
-            className={`vote-button ${userVote === -1 ? 'active' : ''}`}
+            className={`vote-button ${post.userVote === -1 ? 'active' : ''}`}
             onClick={() => handleVote(-1)}
           >
             <FaArrowDown />
