@@ -49,7 +49,7 @@ const HomePage = () => {
                   community: `/c/${post.community?.name || 'general'}`,
                   votes: post.votes || 0,
                   userVote: post.userVote || 0,
-                  comments: 0,
+                  commentCount: post.commentCount || 0, // ✅ Pass Redux value
                 }}
               />
             ))}

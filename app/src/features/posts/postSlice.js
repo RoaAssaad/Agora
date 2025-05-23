@@ -21,7 +21,7 @@ export const fetchPosts = createAsyncThunk(
   }
 );
 
-// Vote on a post and update the post state
+// Vote on a post
 export const voteOnPostThunk = createAsyncThunk(
   'posts/voteOnPost',
   async ({ postId, value }, thunkAPI) => {
@@ -37,7 +37,15 @@ export const voteOnPostThunk = createAsyncThunk(
 const postSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {},
+  reducers: {
+    setCommentCount: (state, action) => {
+      const { postId, count } = action.payload;
+      const post = state.posts.find((p) => p.id === postId);
+      if (post) {
+        post.commentCount = count;
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchPosts.pending, (state) => {
@@ -63,4 +71,5 @@ const postSlice = createSlice({
   },
 });
 
+export const { setCommentCount } = postSlice.actions;
 export default postSlice.reducer;

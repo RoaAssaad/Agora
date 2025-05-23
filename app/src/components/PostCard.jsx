@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FaArrowUp, FaArrowDown, FaComment } from 'react-icons/fa';
 import { useAppDispatch } from '../app/hooks';
-import { voteOnPostThunk } from '../features/posts/postSlice';
+import { voteOnPostThunk, setCommentCount } from '../features/posts/postSlice';
 import { fetchCommentsByPost, createComment } from '../services/CommentService';
 import './PostCard.css';
 
@@ -20,6 +20,7 @@ const PostCard = ({ post }) => {
       setLoadingComments(true);
       const res = await fetchCommentsByPost(post.id);
       setComments(res.data);
+      dispatch(setCommentCount({ postId: post.id, count: res.data.length }));
     } catch (err) {
       console.error('Failed to load comments', err);
     } finally {
@@ -38,7 +39,7 @@ const PostCard = ({ post }) => {
     try {
       await createComment(post.id, newComment);
       setNewComment('');
-      loadComments();
+      loadComments(); // Also updates Redux comment count
     } catch (err) {
       alert('Failed to submit comment.');
     }
@@ -70,7 +71,7 @@ const PostCard = ({ post }) => {
             <FaArrowDown />
           </button>
           <span className="comment-count">
-            <FaComment /> {comments.length}
+            <FaComment /> {post.commentCount ?? 0}
           </span>
         </div>
 
