@@ -1,4 +1,4 @@
-# **Agora**
+# **Agora Community Platform**
 
 ## **Project Description**
 
@@ -6,158 +6,165 @@ Agora is a modern discussion platform where users can create communities, share 
 
 ---
 
-## **Features**
+##  Features
 
-- **Community Creation**: Users can create, manage, and join custom communities
-- **Post Creation**: Text + image posts with sorting (Popular, Recent, Top)
-- **Voting System**: Upvote and downvote posts, with vote tallies and user vote memory
-- **Comment System**: Add and view comments in real-time under posts
-- **Profile Management**: View user details, uploaded posts, and update profile picture
-- **Image Uploads**: Base64 image storage in PostgreSQL 
-- **Search Functionality**: Live community search with fuzzy match
-- **Authentication**: JWT-based login and registration system
-- **Modern UI**: Purple-themed, responsive layout using Bootstrap + custom styles
+-  JWT-based authentication and protected routes
+-  Community creation, editing, and deletion
+-  Post creation (text + image) and sorting (Popular, Recent, Top)
+-  Voting system with real-time count updates
+-  Commenting system with comment count tracking
+-  Profile management and profile photo upload
+-  Live fuzzy search for communities
+-  Redux global state management for posts, user, and comments
+
+---
+##  Libraries Used
+
+### Frontend
+- React + Vite
+- Redux Toolkit
+- React Router DOM
+- React Bootstrap
+- Axios + JWT Interceptor
+- React Icons
+
+### Backend
+- NestJS + TypeORM
+- PostgreSQL
+- Swagger (`@nestjs/swagger`)
+- Passport + JWT
+- Class-validator + Bcrypt
 
 ---
 
-## **Backend Routes**
 
-### **Auth**
+##  Redux Toolkit Integration
 
-| Method | Endpoint         | Description        | Status Codes |
-|--------|------------------|--------------------|--------------|
-| POST   | `/auth/register` | Register a user    | 201, 400     |
-| POST   | `/auth/login`    | Login and get JWT  | 200, 401     |
+Agora uses Redux Toolkit for shared application state. It replaces local and context-based state using:
+- `userSlice`: for user authentication and profile state
+- `postSlice`: for managing post data, votes, and fetching
+- `setCommentCount` reducer to update comments per post
+- `createAsyncThunk` for async fetches and vote logic
 
-### **Users**
-
-| Method | Endpoint           | Description                | Status Codes |
-|--------|--------------------|----------------------------|--------------|
-| GET    | `/users`           | Get all users              | 200          |
-| GET    | `/users/me`        | Get current authenticated user | 200, 401 |
-| PATCH  | `/users/profile-photo` | Upload/update profile image | 200, 400     |
-
-### **Posts**
-
-| Method | Endpoint       | Description              | Status Codes |
-|--------|----------------|--------------------------|--------------|
-| GET    | `/posts`       | Get all posts (sortable) | 200          |
-| GET    | `/posts/:id`   | Get a specific post      | 200, 404     |
-| POST   | `/posts`       | Create a post (auth)     | 201, 401     |
-| PATCH  | `/posts/:id`   | Update a post (auth)     | 200, 403     |
-| DELETE | `/posts/:id`   | Delete a post (auth)     | 200, 403     |
-
-### **Comments**
-
-| Method | Endpoint             | Description               | Status Codes |
-|--------|----------------------|---------------------------|--------------|
-| GET    | `/comments/post/:id`| Get comments by post      | 200, 404     |
-| POST   | `/comments`         | Create comment (auth)     | 201, 401     |
-
-### **Votes**
-
-| Method | Endpoint        | Description                | Status Codes |
-|--------|-----------------|----------------------------|--------------|
-| POST   | `/votes`        | Upvote/downvote a post     | 200, 400     |
-| DELETE | `/votes/:id`    | Remove vote (auth)         | 200, 401     |
-
-### **Communities**
-
-| Method | Endpoint          | Description                | Status Codes |
-|--------|-------------------|----------------------------|--------------|
-| GET    | `/communities`    | Get all communities        | 200          |
-| GET    | `/communities/:id`| Get a specific community   | 200, 404     |
-| POST   | `/communities`    | Create community (auth)    | 201, 400     |
-| PATCH  | `/communities/:id`| Update community (auth)    | 200, 403     |
-| DELETE | `/communities/:id`| Delete community (auth)    | 200, 403     |
+UI components use `useAppSelector` and `useAppDispatch` to connect to the Redux store.
 
 ---
 
-## **Database Tables**
+##  API Endpoints Overview
 
-1. **Users**
-   - `id`, `username`, `email`, `password`, `aura`, `created_at`, `profileImage`
-2. **Posts**
-   - `id`, `title`, `content`, `image`, `votes`, `created_at`, `creatorId`, `communityId`
-3. **Comments**
-   - `id`, `content`, `created_at`, `postId`, `userId`
-4. **Communities**
-   - `id`, `name`, `title`, `description`, `created_at`, `creatorId`
-5. **Votes**
-   - `id`, `value`, `created_at`, `postId`, `userId`
+>  Full Swagger UI: [http://localhost:3000/api](http://localhost:3000/api)
 
----
-
-## **Libraries Used**
-
-### **Frontend**
-- **React.js + Vite** – Fast modern frontend setup
-- **React Bootstrap** – UI components
-- **React Router DOM** – Navigation
-- **Axios** – HTTP client with JWT support
-- **React Icons** – Icon set
-- **Base64 Uploads** – Direct image storage to DB
-- **Custom Hooks + Context** – State management
-
-### **Backend**
-- **NestJS** – Modular backend framework
-- **TypeORM** – PostgreSQL ORM
-- **JWT + Passport** – Authentication
-- **Bcrypt** – Password encryption
-- **Class-Validator** – DTO validation
-- **Docker (Postgres only)** – Containerized DB
+| Resource     | Method | Endpoint                         | Description                            |
+|--------------|--------|----------------------------------|----------------------------------------|
+| **Auth**     | POST   | `/auth/register`                 | Register a new user                    |
+|              | POST   | `/auth/login`                    | Log in and receive JWT                 |
+| **Users**    | GET    | `/users`                         | List all users (protected)            |
+|              | GET    | `/users/me`                      | Get current authenticated user         |
+|              | PATCH  | `/users/profile-photo`           | Update profile image                   |
+| **Posts**    | GET    | `/posts?sort=`                   | Get posts sorted (Popular, Recent...)  |
+|              | GET    | `/posts/:id`                     | View a single post                     |
+|              | POST   | `/posts`                         | Create post (protected)                |
+|              | PATCH  | `/posts/:id`                     | Update post (creator only)             |
+|              | DELETE | `/posts/:id`                     | Delete post (creator only)             |
+| **Comments** | GET    | `/comments/post/:postId`         | Get comments under a post              |
+|              | POST   | `/comments`                      | Add a comment (protected)              |
+| **Votes**    | POST   | `/votes`                         | Upvote/downvote post (protected)       |
+|              | DELETE | `/votes/:id`                     | Remove a vote (protected)              |
+| **Communities** | GET | `/communities`                   | View all communities                   |
+|              | GET    | `/communities/:id`               | View specific community                |
+|              | POST   | `/communities`                   | Create community (protected)           |
+|              | PATCH  | `/communities/:id`               | Update community (creator only)        |
+|              | DELETE | `/communities/:id`               | Delete community (creator only)        |
 
 ---
 
-## **How to Start**
+##  Database Schema
 
-### **Backend Setup**
+### `users`
+- `id`, `username`, `email`, `password`, `aura`, `profileImage`, `created_at`
+
+### `posts`
+- `id`, `title`, `content`, `image`, `votes`, `creatorId`, `communityId`, `created_at`
+
+### `comments`
+- `id`, `content`, `postId`, `userId`, `created_at`
+
+### `votes`
+- `id`, `value (-1, 0, 1)`, `postId`, `userId`, `created_at`
+
+### `communities`
+- `id`, `name`, `title`, `description`, `creatorId`, `created_at`
+
+
+
+---
+
+##  Setup Instructions
+
+### Backend
+
 ```bash
 cd api
 npm install
 ```
 
-Set up `.env`:
-```env
+Create `.env` file:
+```
 DATABASE_URL=postgresql://postgres:password@localhost:5432/agora
 JWT_SECRET=your_jwt_secret
 ```
 
-Start the server:
+Run backend:
 ```bash
 npm run start:dev
 ```
 
-### **Frontend Setup**
+### Frontend
+
 ```bash
 cd app
 npm install
 npm run dev
 ```
 
-Open `http://localhost:5173`
+Visit: `http://localhost:5173`
 
 ---
 
-## **Use Case: User Journey**
+##  How to Run & Test
 
-1. New user registers via `/register`
-2. Creates a post in a community
-3. Other users view, upvote, and comment
-4. Posts rise in "Popular" or "Top"
-5. Users visit profiles to see authored posts
-6. Communities are browsed via search + sidebar
+- Use frontend UI for all user workflows
+- Use Swagger UI (`http://localhost:3000/api`) to test endpoints interactively
+- Use DevTools for Redux state tracking (optional)
 
 ---
+##  User Journey
 
-## **Context Diagram**
+1. New user registers via `/auth/register`
+2. Logs in via `/auth/login`
+3. Creates a new community
+4. Creates a post in that community
+5. Other users view, upvote, and comment on the post
+6. Users upload a profile photo from the profile page
+7. Posts begin to rise in "Popular" or "Top" tabs based on votes
+8. Users visit profiles to see authored posts and uploaded image
+9. Communities are browsed using the search bar or sidebar
+
+
+##  Context Diagram
 
 ```plaintext
-  +-------------+          +--------------+         +------------------+
-  |   Frontend  | <--->    |   Backend    | <--->   |   PostgreSQL DB  |
-  | (React/Vite)|          | (NestJS API) |         | (TypeORM Models) |
-  +-------------+          +--------------+         +------------------+
-        |                         |                        |
-        |-- Axios API Calls ------>                        |
-        |                         |-- Queries/Mutations -->|
++-------------+          +--------------+         +------------------+
+|   Frontend  | <--->    |   Backend    | <--->   |   PostgreSQL DB  |
+| (React/Vite)|          | (NestJS API) |         | (TypeORM Models) |
++-------------+          +--------------+         +------------------+
+      |                         |                        |
+      |-- Axios API Calls ----->                        |
+      |                         |-- Queries/Mutations -->|
 ```
+
+---
+
+##  Swagger Export
+
+Go to [http://localhost:3000/api](http://localhost:3000/api), then press `Ctrl + P` → Save as PDF.

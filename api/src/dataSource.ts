@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import { User } from './users/user.entity'; // Add all entities here!
+import { User } from './users/user.entity'; 
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -9,7 +9,7 @@ export const AppDataSource = new DataSource({
   password: process.env.DATABASE_PASSWORD || 'root',
   database: process.env.DATABASE_NAME || 'agora',
   entities: [__dirname + '/**/*.entity.{ts,js}'], // Load all entities
-  migrations: [__dirname + '/migrations/*{.ts,.js}'], // Correct path!
-  synchronize: false, //  Don't use in production (only migrations!)
+  migrations: [__dirname + '/migrations/*{.ts,.js}'], 
+  synchronize: false,
   logging: true, // Logs SQL queries
 });

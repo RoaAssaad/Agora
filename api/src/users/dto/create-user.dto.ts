@@ -1,13 +1,12 @@
-/**
- * Data Transfer Object for user registration.
- * Used in AuthService and UsersService.
- */
+import { ApiProperty } from '@nestjs/swagger';
+
 export class CreateUserDto {
-    /** Unique username for registration/login */
-    username: string;
-      /** User email address */
-    email: string;
-      /** Plain-text password (will be hashed before saving) */
-    password: string;
-  }
-  
+  @ApiProperty({ description: 'Unique username for registration/login' })
+  username: string;
+
+  @ApiProperty({ description: 'User email address' })
+  email: string;
+
+  @ApiProperty({ description: 'Plain-text password (will be hashed)' })
+  password: string;
+}

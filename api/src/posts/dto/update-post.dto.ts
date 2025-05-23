@@ -1,14 +1,16 @@
 import { IsOptional, IsString } from 'class-validator';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+
 /**
  * DTO for updating a post.
- * Allows partial updates of title or content.
  */
 export class UpdatePostDto {
-    /** Optional updated title */
+  @ApiPropertyOptional({ description: 'Optional updated title' })
   @IsOptional()
   @IsString()
   title?: string;
- /** Optional updated content */
+
+  @ApiPropertyOptional({ description: 'Optional updated content' })
   @IsOptional()
   @IsString()
   content?: string;

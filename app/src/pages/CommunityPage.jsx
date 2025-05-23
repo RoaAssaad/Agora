@@ -2,19 +2,16 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import PostCard from '../components/PostCard';
+import { getCommunityByName } from '../services/CommunityService';
 import axios from 'axios';
 import './HomePage.css'; // Reuse layout styles
+
 /**
  * Displays a single community page.
  * Fetches:
- *  - All communities (to match name param)
- *  - All posts (filtered by community)
- * Shows:
- *  - Header with name and description
- *  - Posts in this community using PostCard
+ *  - Community by name (via backend route)
+ *  - Posts filtered by community
  */
-
-
 const CommunityPage = () => {
   const { name } = useParams();
   const [community, setCommunity] = useState(null);
@@ -27,19 +24,17 @@ const CommunityPage = () => {
 
   const fetchCommunityData = async () => {
     try {
-      const communityRes = await axios.get(`http://localhost:3000/communities`);
-      const matched = communityRes.data.find((c) => c.name === name);
-      setCommunity(matched || null);
+      const res = await getCommunityByName(name);
+      setCommunity(res.data);
 
-      if (matched) {
-        const postsRes = await axios.get(`http://localhost:3000/posts`);
-        const filteredPosts = postsRes.data.filter(
-          (post) => post.community?.name === name
-        );
-        setPosts(filteredPosts);
-      }
+      const postsRes = await axios.get('http://localhost:3000/posts');
+      const filteredPosts = postsRes.data.filter(
+        (post) => post.community?.name === name
+      );
+      setPosts(filteredPosts);
     } catch (err) {
-      console.error('Failed to fetch community or posts', err);
+      console.error('Community not found or fetch failed', err);
+      setCommunity(null);
     } finally {
       setLoading(false);
     }
