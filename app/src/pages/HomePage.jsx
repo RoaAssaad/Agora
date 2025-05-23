@@ -1,23 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Tabs from '../components/Tabs';
 import PostCard from '../components/PostCard';
-import { usePosts } from '../hooks/usePosts';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { fetchPosts } from '../features/posts/postSlice';
 import './HomePage.css';
-/**
- * Main feed view of Agora.
- * Uses:
- *  - `Sidebar`
- *  - `usePosts()` for sorted post list
- *  - `Tabs` for sorting control
- *  - `PostCard` to display each post
- */
 
 const HomePage = () => {
   const [tab, setTab] = useState('Popular');
   const navigate = useNavigate();
-  const { posts, loading } = usePosts(tab);
+  const dispatch = useAppDispatch();
+  const { posts, loading } = useAppSelector((state) => state.posts);
+
+  useEffect(() => {
+    dispatch(fetchPosts(tab));
+  }, [dispatch, tab]);
 
   return (
     <div className="homepage-container">
@@ -47,8 +45,8 @@ const HomePage = () => {
                   content: post.content,
                   image: post.image || null,
                   time: new Date(post.created_at).toLocaleString(),
-                  user: post.creator?.username || "Unknown",
-                  community: `/c/${post.community?.name || "general"}`,
+                  user: post.creator?.username || 'Unknown',
+                  community: `/c/${post.community?.name || 'general'}`,
                   votes: post.votes || 0,
                   userVote: post.userVote || 0,
                   comments: 0,
